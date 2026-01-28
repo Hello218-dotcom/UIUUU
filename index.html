@@ -1,722 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stoxgear</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stoxgear</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg:#ffffff;
-      --surface:#ffffff;
-      --ink:#141414;
-      --muted:#666666;
-      --accent:#c9a646;
-      --accent-ink:#0b0b0b;
-      --ring:rgba(201,166,70,.28);
-      --line:#e5e5e5;
-      --radius:16px;
-      --shadow:0 10px 26px rgba(0,0,0,.10);
-      --shadow-2:0 18px 46px rgba(0,0,0,.14);
-      --maxw:1200px;
-    }
+<style>
+:root{
+  --bg:#ffffff;
+  --surface:#ffffff;
+  --ink:#141414;
+  --muted:#666666;
+  --accent:#c9a646;
+  --accent-ink:#0b0b0b;
+  --line:#e5e5e5;
+  --radius:16px;
+  --shadow:0 10px 26px rgba(0,0,0,.10);
+  --shadow-2:0 18px 46px rgba(0,0,0,.14);
+  --maxw:1200px;
+  --safePad:max(14px, env(safe-area-inset-left));
+}
 
-    html.is-mobile { scroll-behavior:smooth; }
-    html.is-desktop { scroll-behavior:smooth; }
+*{box-sizing:border-box}
+html,body{height:100%;overflow-x:hidden}
+body{
+  margin:0;
+  font-family:Inter,system-ui,sans-serif;
+  background:#fff;
+  color:var(--ink);
+}
 
-    @media (prefers-reduced-motion: reduce){
-      *{ animation-duration:0.001ms!important; animation-iteration-count:1!important; transition-duration:0.001ms!important; scroll-behavior:auto!important; }
-    }
+/* ================= CONTAINER ================= */
+.container{
+  max-width:var(--maxw);
+  margin:auto;
+  padding-left:var(--safePad);
+  padding-right:var(--safePad);
+}
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--ink);
-      font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
-      text-rendering:optimizeLegibility;
-      -webkit-font-smoothing:antialiased;
-    }
-    a{color:inherit;text-decoration:none}
-    img{max-width:100%;height:auto;display:block}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
 
-    .container{max-width:var(--maxw);margin:auto;padding:0 20px}
+/* ================= BUTTON ================= */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px 20px;
+  border-radius:999px;
+  background:var(--accent);
+  color:var(--accent-ink);
+  font-weight:900;
+  box-shadow:var(--shadow);
+}
+@media(max-width:540px){
+  .btn{width:100%}
+}
 
-    .btn{
-      display:inline-flex;align-items:center;gap:10px;
-      background:var(--accent);color:var(--accent-ink);
-      padding:12px 18px;border-radius:999px;font-weight:900;
-      border:1px solid transparent;
-      box-shadow:var(--shadow);
-      transition:transform .22s ease, filter .22s ease, box-shadow .22s ease;
-      will-change:transform;
-    }
-    .btn:hover{transform:translateY(-1px);filter:brightness(1.05);box-shadow:var(--shadow-2)}
-    .btn:active{transform:translateY(0) scale(.99)}
+/* ================= NAVBAR ================= */
+.nx-navbar{
+  position:sticky;top:0;z-index:1000;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+}
+.nx-navbar.scrolled{box-shadow:0 10px 28px rgba(0,0,0,.12)}
 
-    /* ================= NAVBAR ================= */
-    .nx-navbar a{ text-decoration:none!important; }
-    .nx-navbar a:hover,.nx-navbar a:focus,.nx-navbar a:active{ text-decoration:none!important; }
+.nx-nav-inner{
+  max-width:var(--maxw);
+  margin:auto;
+  padding:14px var(--safePad);
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
 
-    .nx-navbar{
-      position:sticky;top:0;z-index:1000;
-      background:#fff;
-      border-bottom:1px solid var(--line);
-      box-shadow:0 6px 18px rgba(0,0,0,.06);
-      transition:box-shadow .25s ease;
-    }
-    .nx-navbar.scrolled{ box-shadow:0 10px 28px rgba(0,0,0,.12); }
+.nx-brand{display:flex;align-items:center;gap:10px;max-width:70%}
+.nx-logo,.nx-logo2{height:36px}
+@media(max-width:420px){
+  .nx-logo2{display:none}
+}
 
-    .nx-nav-inner{
-      max-width:var(--maxw);
-      margin:0 auto;
-      padding:14px 24px;
-      display:flex;
-      align-items:center;
-      gap:16px;
-      position:relative;
-    }
+.nx-grow{flex:1}
 
-    .nx-brand{display:flex;align-items:center;gap:10px;color:var(--ink);}
-    .nx-logo,.nx-logo2{height:38px;width:auto;object-fit:contain}
-    .nx-logo2{margin-left:8px}
+.nx-toggle{
+  display:none;
+  font-size:22px;
+  border:1px solid var(--line);
+  padding:6px 12px;
+  border-radius:10px;
+  background:#fff;
+}
 
-    .nx-grow{flex:1}
+/* MENU */
+.nx-menu{
+  display:flex;
+  gap:26px;
+}
+.nx-item{position:relative}
+.nx-link{font-weight:800;color:var(--muted)}
+.nx-link:hover{color:var(--accent)}
 
-    .nx-cta{
-      background:var(--accent);
-      color:var(--accent-ink);
-      font-weight:900;
-      border:none;
-      padding:10px 22px;
-      border-radius:999px;
-      cursor:pointer;
-      transition:transform .22s ease, filter .22s ease, box-shadow .22s ease;
-      box-shadow:0 10px 22px rgba(201,166,70,.20);
-    }
-    .nx-cta:hover{filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 16px 34px rgba(201,166,70,.26)}
-    .nx-cta:active{transform:translateY(0) scale(.99)}
+.nx-drop{
+  position:absolute;
+  top:calc(100% + 10px);
+  left:0;
+  min-width:240px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:10px;
+  display:none;
+  box-shadow:0 12px 28px rgba(0,0,0,.12);
+}
+.nx-drop a{
+  display:block;
+  padding:10px;
+  border-radius:10px;
+}
+.nx-drop a:hover{background:#f6f6f6;color:var(--accent)}
 
-    .nx-toggle{
-      display:none;
-      background:#fff;
-      border:1px solid var(--line);
-      padding:6px 12px;
-      border-radius:10px;
-      font-size:20px;
-      cursor:pointer;
-    }
+@media(min-width:1025px){
+  .nx-item:hover>.nx-drop{display:block}
+}
 
-    .nx-menu{display:flex;align-items:center;gap:26px;}
-    .nx-item{position:relative;}
-    .nx-link{color:var(--muted);font-weight:800;position:relative;}
-    .nx-link:hover{color:var(--accent);}
-    .nx-link:after{
-      content:"";
-      position:absolute;
-      left:0; bottom:-6px;
-      width:0;height:2px;
-      background:var(--accent);
-      transition:.25s;
-    }
-    .nx-link:hover:after{width:100%;}
+/* ================= MOBILE NAV ================= */
+@media(max-width:1024px){
+  .nx-toggle{display:block}
+  .nx-menu{
+    position:absolute;
+    top:100%;
+    left:0;right:0;
+    flex-direction:column;
+    background:#fff;
+    border-top:1px solid var(--line);
+    max-height:calc(100vh - 66px);
+    overflow:auto;
+    display:none;
+    padding:12px;
+  }
+  .nx-navbar.is-open .nx-menu{display:flex}
+  .nx-link{padding:12px;border-radius:12px}
+  .nx-drop{
+    position:static;
+    border:none;
+    box-shadow:none;
+    padding:0;
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transition:.3s ease;
+  }
+  .nx-item.open>.nx-drop{
+    max-height:600px;
+    opacity:1;
+  }
+}
 
-    .nx-drop{
-      position:absolute;
-      top:calc(100% + 10px);
-      left:0;
-      min-width:240px;
-      background:#fff;
-      border:1px solid var(--line);
-      padding:10px;
-      border-radius:14px;
-      display:none;
-      box-shadow:0 12px 28px rgba(0,0,0,.12);
-      transform-origin:top left;
-      animation:dropIn .18s ease-out;
-    }
-    @keyframes dropIn{
-      from{opacity:0; transform:translateY(6px) scale(.98);}
-      to{opacity:1; transform:translateY(0) scale(1);}
-    }
-    .nx-drop a{
-      display:block;
-      padding:9px 10px;
-      color:var(--ink);
-      border-radius:10px;
-      font-weight:700;
-    }
-    .nx-drop a:hover{ background:#f6f6f6; color:var(--accent); }
+/* ================= HERO ================= */
+.hero{border-bottom:1px solid var(--line)}
+.hero__inner{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:28px;
+  padding:36px 0;
+}
+.hero h1{
+  font-size:clamp(28px,5vw,56px);
+  line-height:1.05;
+}
+.hero p{color:var(--muted);line-height:1.6}
+.hero__art img{border-radius:16px;box-shadow:var(--shadow)}
 
-    @media (min-width:1025px){
-      .nx-item:hover>.nx-drop{display:block;}
-    }
+@media(max-width:900px){
+  .hero__inner{grid-template-columns:1fr}
+}
 
-    @media (max-width:1024px){
-      .nx-nav-inner{padding:12px 14px;}
-      .nx-logo,.nx-logo2{height:34px;}
-      .nx-toggle{display:block;}
-      .nx-cta{display:none;}
+/* ================= TICKER ================= */
+.ticker{background:#f7f8f9;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ticker__row{
+  display:flex;
+  gap:28px;
+  white-space:nowrap;
+  animation:marq 34s linear infinite;
+}
+@keyframes marq{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+@media(max-width:540px){
+  .ticker__row{animation-duration:42s}
+}
 
-      .nx-menu{
-        display:none;
-        position:absolute;
-        top:100%;
-        left:0; right:0;
-        background:#fff;
-        border-top:1px solid var(--line);
-        flex-direction:column;
-        box-shadow:0 12px 26px rgba(0,0,0,.08);
-        padding:10px 12px;
-        gap:8px;
-        max-height:72vh;
-        overflow:auto;
-      }
-      .nx-navbar.is-open .nx-menu{display:flex;}
+/* ================= CARDS ================= */
+.features,.steps__row,.triple{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+  margin:40px 0;
+}
+.card,.step{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:22px;
+  box-shadow:var(--shadow);
+}
+@media(max-width:980px){
+  .features,.steps__row,.triple{grid-template-columns:1fr}
+}
 
-      .nx-item{width:100%;}
-      .nx-link{display:block;padding:12px 10px;border-radius:12px;}
-      .nx-link:hover{background:#fbfbfb;}
-      .nx-link:after{display:none;}
-
-      .nx-drop{
-        position:static;
-        border:0;
-        box-shadow:none;
-        background:none;
-        padding:6px 0 0;
-        display:none;
-        animation:none;
-      }
-      .nx-item.open>.nx-drop{display:block;}
-      .nx-drop a{
-        padding:10px 12px;
-        border:1px solid var(--line);
-        margin:6px 0 0;
-        background:#fff;
-      }
-    }
-
-    /* ================= HERO ================= */
-    .hero{
-      position:relative;
-      overflow:hidden;
-      background:#fff;
-      border-bottom:1px solid var(--line);
-    }
-    .hero__inner{
-      position:relative;
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:28px;
-      align-items:center;
-      padding:42px 0 26px;
-    }
-    .hero h1{
-      font-size:clamp(28px,5vw,56px);
-      line-height:1.05;
-      margin:10px 0 14px;
-      letter-spacing:-0.02em;
-    }
-    .hero h1 .hl{color:var(--accent)}
-    .hero p{
-      color:var(--muted);
-      max-width:640px;
-      line-height:1.65;
-      margin:0;
-    }
-    .hero__art .frame{
-      border-radius:16px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-      border:1px solid rgba(201,166,70,.20);
-    }
-    .hero__art img{
-      width:100%;
-      height:320px;
-      object-fit:cover;
-    }
-    @media (max-width:900px){
-      .hero__inner{grid-template-columns:1fr; padding:26px 0 18px;}
-      .hero__art{order:-1;}
-      .hero__art img{height:240px;}
-    }
-
-    /* ================= TICKER ================= */
-    .ticker{
-      position:relative;
-      background:#f7f8f9;
-      border-top:1px solid var(--line);
-      border-bottom:1px solid var(--line);
-      overflow:hidden;
-    }
-    .ticker__row{
-      display:flex;
-      gap:28px;
-      white-space:nowrap;
-      animation:marq 120s linear infinite; /* medium slow */
-      padding:10px 0;
-      will-change:transform;
-    }
-    @keyframes marq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-    .tick{display:flex;gap:8px;align-items:baseline;color:var(--ink);font-size:14px}
-    .tick .sym{font-weight:900}
-    .tick.up{color:#0c8a0c}.tick.down{color:#c0392b}
-
-    @media(max-width:640px){
-      .ticker__row{animation-duration:150s;gap:16px;}
-      .tick{font-size:12.5px;}
-    }
-
-    /* ================= FEATURES ================= */
-    .features{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:28px;
-      margin:40px 0;
-    }
-    .card{
-      background:var(--surface);
-      border:1px solid var(--line);
-      border-radius:20px;
-      padding:22px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      position:relative;
-    }
-    .card .media{
-      border-radius:14px;
-      overflow:hidden;
-      border:1px solid rgba(201,166,70,.18);
-      background:#fff;
-      margin-bottom:12px;
-    }
-    .card .media img{
-      width:100%;
-      height:210px;
-      object-fit:cover;
-    }
-    .card h3{margin:6px 0 8px;font-weight:900;}
-    .card p{color:var(--muted);margin:0;line-height:1.6;}
-
-    @media (max-width:980px){
-      .features{grid-template-columns:1fr; gap:14px;}
-      .card{padding:18px}
-      .card .media img{height:200px;}
-    }
-
-    /* ================= SUPPORT CARDS (ONLY FILENAMES) ================= */
-    .section-title{
-      margin:10px 0 0;
-      font-size:22px;
-      font-weight:900;
-      letter-spacing:-.01em;
-    }
-    .section-sub{
-      margin:10px 0 0;
-      color:var(--muted);
-      line-height:1.6;
-      max-width:820px;
-    }
-    .support-grid{margin-top:18px;}
-    .support-card{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      padding:18px;
-      border-radius:18px;
-      border:1px solid rgba(201,166,70,.35);
-      background:#fff;
-      box-shadow:var(--shadow);
-      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-    }
-    .support-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-2);border-color:var(--accent);}
-    .support-ico{
-      width:52px;height:52px;border-radius:14px;
-      display:grid;place-items:center;
-      background:rgba(201,166,70,.12);
-      border:1px solid rgba(201,166,70,.22);
-      font-weight:900;
-      color:var(--accent);
-      flex:0 0 52px;
-    }
-    .support-body{min-width:0}
-    .support-body h4{margin:0 0 4px;font-size:16px;font-weight:900;}
-    .support-body p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.45;}
-    .support-arrow{margin-left:auto;font-weight:900;color:var(--accent);font-size:22px;}
-    .support-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:14px;
-    }
-    @media(max-width:900px){
-      .support-grid{grid-template-columns:1fr;}
-    }
-
-    /* ================= FOOTER ================= */
-    .nx-footer{
-      margin-top:40px;
-      background:#fafafa;
-      border-top:1px solid var(--line);
-      color:var(--muted);
-    }
-    .nx-foot-wrap{max-width:var(--maxw);margin:0 auto;padding:48px 20px 30px;}
-    .nx-foot-top{display:flex;align-items:center;gap:16px;padding-bottom:20px;border-bottom:1px solid var(--line);}
-    .nx-foot-brand{display:flex;align-items:center;gap:12px;color:var(--ink);}
-    .nx-foot-logo{height:38px;width:auto;}
-    .nx-foot-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:26px;
-      padding:26px 0 10px;
-    }
-    @media(max-width:900px){ .nx-foot-grid{grid-template-columns:repeat(2,1fr);} }
-    @media(max-width:540px){
-      .nx-foot-wrap{padding:34px 14px 22px;}
-      .nx-foot-grid{grid-template-columns:1fr;}
-    }
-    .nx-foot-col h4{font-size:15px;color:var(--accent);margin:0 0 10px;}
-    .nx-foot-col a{
-      color:var(--ink);
-      padding:6px 0;
-      font-size:14px;
-      display:block;
-      opacity:.9;
-      transition:opacity .2s ease, transform .2s ease;
-    }
-    .nx-foot-col a:hover{opacity:1;transform:translateX(2px);}
-
-    .nx-foot-bottom{
-      padding-top:16px;border-top:1px solid var(--line);
-      font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
-      color:var(--muted);
-    }
-  </style>
+/* ================= FOOTER ================= */
+.nx-footer{
+  background:#fafafa;
+  border-top:1px solid var(--line);
+}
+.nx-foot-wrap{
+  max-width:var(--maxw);
+  margin:auto;
+  padding:40px var(--safePad);
+}
+.nx-foot-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:24px;
+}
+@media(max-width:900px){
+  .nx-foot-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:540px){
+  .nx-foot-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 
 <body>
 
-  <!-- ========== NAVBAR ========== -->
-  <header class="nx-navbar" id="nxHeader">
-    <div class="nx-nav-inner">
-      <a class="nx-brand" href="index.html" aria-label="StoxGear Home">
-        <img class="nx-logo" src="stoxgear-logo.jpg" alt="StoxGear">
-        <img class="nx-logo2" src="WhatsApp Image 2025-10-18 at 10.34.53_ed0e28f6.jpg" alt="Partner">
-      </a>
+<header class="nx-navbar" id="nxHeader">
+  <div class="nx-nav-inner">
+    <a class="nx-brand" href="#">
+      <img class="nx-logo" src="stoxgear-logo.jpg">
+      <img class="nx-logo2" src="partner.jpg">
+    </a>
+    <div class="nx-grow"></div>
 
-      <div class="nx-grow"></div>
-
-      <nav class="nx-menu" id="nxMenu" aria-label="Primary navigation">
-        <div class="nx-item">
-          <a class="nx-link" href="#" data-dd="dd-why">Why Us</a>
-          <div class="nx-drop" id="dd-why">
-            <a href="about.html">About Us</a>
-            <a href="BOARD of directors.html">Board / Management</a>
-            <a href="Mission.html">Mission & Vision</a>
-            <a href="associated companies.html">Associated Companies</a>
-            <a href="Ncb auditor details .html">Auditors / Legal Advisors</a>
-            <a href="services.html">Services</a>
-            <a href="Registered agents..html">Registered Agents</a>
-          </div>
-        </div>
-
-        <div class="nx-item">
-          <a class="nx-link" href="#" data-dd="dd-edu">Education</a>
-          <div class="nx-drop" id="dd-edu">
-            <a href="New to trading.html">New to Trading</a>
-            <a href="Investorguid.html">Investor Guide</a>
-            <a href="Glossary.html">Glossary</a>
-            <a href="psx-rule-book.html">PSX Rule Book</a>
-            <a href="common-terms-share-market.html">Common Terms of Share Market</a>
-            <a href="online-order-execution-flow.html">Order Execution Flow</a>
-            <a href="order-settlement-flow.html">Order Settlement Flow</a>
-            <a href="arbitration-procedure.html">Arbitration Procedure</a>
-            <a href="risk-disclosure-document.html">Risk Disclosure Document</a>
-            <a href="procedure-cancel-pending-orders.html">Cancel Pending Orders</a>
-            <a href="faqs.html">FAQs</a>
-          </div>
-        </div>
-
-        <div class="nx-item">
-          <a class="nx-link" href="#" data-dd="dd-open">Open Account</a>
-          <div class="nx-drop" id="dd-open">
-            <a href="Rda.html">Roshan Digital Account</a>
-            <a href="Acoocint opening.html">Open Digital Account</a>
-            <a href="DMANAGE FUDNDS.HTML">Manage Funds</a>
-          </div>
-        </div>
-
-        <div class="nx-item">
-          <a class="nx-link" href="#" data-dd="dd-dl">Downloads</a>
-          <div class="nx-drop" id="dd-dl">
-            <a href="Forms.html">Forms</a>
-            <a href="software.html">Software</a>
-            <a href="Annaual half yearly.html">Financial Statements</a>
-            <a href="KYC poslicy.html">CDD / KYC Policy</a>
-          </div>
-        </div>
-
-        <div class="nx-item">
-          <a class="nx-link" href="#" data-dd="dd-sup">Support</a>
-          <div class="nx-drop" id="dd-sup">
-            <a href="investor complaint.html">Investor Complaint</a>
-            <a href="Pending investor complaun.html">Pending Complaints</a>
-            <a href="Penal action.html">Penal Action</a>
-            <a href="Secp complaint.html">SECP Complaint</a>
-            <a href="psx complaint.html">PSX Complaint</a>
-            <a href="UIs of NICCPL.html">UIS Services</a>
-            <a href="Eservices By CDC.html">EServices by CDC</a>
-          </div>
-        </div>
-
-        <div class="nx-item">
-          <a class="nx-link" href="Contact.html">Contact</a>
-        </div>
-      </nav>
-
-      <button class="nx-cta" type="button">OPEN AN ACCOUNT</button>
-      <button class="nx-toggle" id="nxToggle" aria-label="Open menu" aria-expanded="false">☰</button>
-    </div>
-  </header>
-
-  <!-- ===== HERO ===== -->
-  <section class="hero">
-    <div class="container hero__inner">
-      <div>
-        <h1>Trade smarter. Build <span class="hl">long-term</span> wealth.</h1>
-        <p>Experience fast execution, professional-grade tools, and secure custody—available on desktop and mobile with one protected login.</p>
-        <div class="mt-3">
-          <a class="btn" href="#support">Support Links</a>
+    <nav class="nx-menu" id="nxMenu">
+      <div class="nx-item">
+        <a class="nx-link" data-dd>Why Us</a>
+        <div class="nx-drop">
+          <a href="#">About</a>
+          <a href="#">Board</a>
+          <a href="#">Services</a>
         </div>
       </div>
+      <div class="nx-item"><a class="nx-link" href="#">Contact</a></div>
+    </nav>
 
-      <div class="hero__art">
-        <div class="frame">
-          <img src="32c36e34-464d-4c0c-a42a-caa5b9e3aa68.png" alt="Trading charts on professional screens" loading="lazy"/>
-        </div>
-      </div>
+    <button class="nx-toggle" id="nxToggle">☰</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero__inner">
+    <div>
+      <h1>Trade smarter. Build <span style="color:var(--accent)">wealth</span>.</h1>
+      <p>Professional execution, secure custody, and powerful tools.</p>
+      <a class="btn">Open Account</a>
     </div>
-
-    <div class="ticker" aria-label="Market ticker">
-      <div class="container" style="overflow:hidden">
-        <div class="ticker__row">
-          <div class="tick down"><span class="sym">ALLSHR</span> 99845.79 <span>−0.42%</span></div>
-          <div class="tick down"><span class="sym">KSE100</span> 163806.21 <span>−0.39%</span></div>
-          <div class="tick down"><span class="sym">KMI30</span> 238530.50 <span>−0.36%</span></div>
-          <div class="tick up"><span class="sym">POWER</span> 19.11 <span>+5.17%</span></div>
-          <div class="tick up"><span class="sym">SBL</span> 12.98 <span>+10.00%</span></div>
-          <div class="tick down"><span class="sym">TPLP</span> 11.58 <span>−1.86%</span></div>
-
-          <!-- duplicate -->
-          <div class="tick down"><span class="sym">ALLSHR</span> 99845.79 <span>−0.42%</span></div>
-          <div class="tick down"><span class="sym">KSE100</span> 163806.21 <span>−0.39%</span></div>
-          <div class="tick down"><span class="sym">KMI30</span> 238530.50 <span>−0.36%</span></div>
-          <div class="tick up"><span class="sym">POWER</span> 19.11 <span>+5.17%</span></div>
-          <div class="tick up"><span class="sym">SBL</span> 12.98 <span>+10.00%</span></div>
-          <div class="tick down"><span class="sym">TPLP</span> 11.58 <span>−1.86%</span></div>
-        </div>
-      </div>
+    <div class="hero__art">
+      <img src="hero.png">
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- ===== FEATURE CARDS ===== -->
-  <section class="container" id="why">
-    <div class="features">
-      <article class="card">
-        <div class="media">
-          <img src="67d257b1-d533-4979-b5bd-2c71e6c14369.png" alt="Experienced Portfolio Support" loading="lazy"/>
-        </div>
-        <h3>Experienced Portfolio Support</h3>
-        <p>Work with market professionals focused on disciplined execution, risk control, and investor outcomes.</p>
-      </article>
+<footer class="nx-footer">
+  <div class="nx-foot-wrap">
+    © 2026 Stoxgear Securities (Private) Limited
+  </div>
+</footer>
 
-      <article class="card">
-        <div class="media">
-          <img src="261d52a1-187a-4f29-b436-745c87472b75.png" alt="Professional Trading Platform" loading="lazy"/>
-        </div>
-        <h3>Professional Trading Platform</h3>
-        <p>Desktop and mobile apps with fast order entry, live quotes, and customizable watchlists for better control.</p>
-      </article>
+<script>
+/* NAV */
+const header=document.getElementById("nxHeader");
+const toggle=document.getElementById("nxToggle");
+const menu=document.getElementById("nxMenu");
 
-      <article class="card">
-        <div class="media">
-          <img src="62fc0d92-eb2b-44e1-b010-5f60358398b9.png" alt="Research & Market Intelligence" loading="lazy"/>
-        </div>
-        <h3>Research &amp; Market Intelligence</h3>
-        <p>Actionable research, screeners, and market data designed to help you identify opportunities and make informed decisions.</p>
-      </article>
-    </div>
-  </section>
+toggle.onclick=()=>{
+  header.classList.toggle("is-open");
+  document.body.classList.toggle("nav-locked");
+};
 
-  <!-- ===== SUPPORT CARDS (ONLY FILENAMES) ===== -->
-  <section class="container" id="support" style="padding-bottom:10px;">
-    <h2 class="section-title">Support &amp; Complaints</h2>
-    <p class="section-sub">Quick links to the official complaint and support pages (same filenames as in your Support menu).</p>
+menu.addEventListener("click",e=>{
+  const link=e.target.closest("[data-dd]");
+  if(!link) return;
+  e.preventDefault();
+  link.parentElement.classList.toggle("open");
+});
 
-    <div class="support-grid">
-      <a class="support-card" href="investor complaint.html">
-        <div class="support-ico">IC</div>
-        <div class="support-body">
-          <h4>Investor Complaint</h4>
-          <p>File a complaint and follow up through the investor complaint process.</p>
-        </div>
-        <div class="support-arrow">›</div>
-      </a>
-
-      <a class="support-card" href="Pending investor complaun.html">
-        <div class="support-ico">PC</div>
-        <div class="support-body">
-          <h4>Pending Complaints</h4>
-          <p>View status and reference of pending complaints.</p>
-        </div>
-        <div class="support-arrow">›</div>
-      </a>
-
-      <a class="support-card" href="Penal action.html">
-        <div class="support-ico">PA</div>
-        <div class="support-body">
-          <h4>Penal Action</h4>
-          <p>Information regarding penal actions and disclosures.</p>
-        </div>
-        <div class="support-arrow">›</div>
-      </a>
-
-      <a class="support-card" href="Secp complaint.html">
-        <div class="support-ico">SE</div>
-        <div class="support-body">
-          <h4>SECP Complaint</h4>
-          <p>Submit complaint via SECP complaint channel.</p>
-        </div>
-        <div class="support-arrow">›</div>
-      </a>
-
-      <a class="support-card" href="psx complaint.html">
-        <div class="support-ico">PX</div>
-        <div class="support-body">
-          <h4>PSX Complaint</h4>
-          <p>Complaint and query submission via PSX portal.</p>
-        </div>
-        <div class="support-arrow">›</div>
-      </a>
-
-      <a class="support-card" href="UIs of NICCPL.html">
-        <div class="support-ico">UI</div>
-        <div class="support-body">
-          <h4>UIS Services</h4>
-          <p>UIS services and relevant supporting information.</p>
-        </div>
-        <div class="support-arrow">›</div>
-      </a>
-
-      <a class="support-card" href="Eservices By CDC.html">
-        <div class="support-ico">CD</div>
-        <div class="support-body">
-          <h4>EServices by CDC</h4>
-          <p>CDC e-services and investor support resources.</p>
-        </div>
-        <div class="support-arrow">›</div>
-      </a>
-    </div>
-  </section>
-
-  <!-- ========== FOOTER ========== -->
-  <footer class="nx-footer" id="contact">
-    <div class="nx-foot-wrap">
-      <div class="nx-foot-top">
-        <a class="nx-foot-brand" href="index.html">
-          <img class="nx-foot-logo" src="stoxgear-logo.jpg" alt="">
-          <img class="nx-foot-logo" src="WhatsApp Image 2025-10-18 at 10.34.53_ed0e28f6.jpg" alt="">
-        </a>
-      </div>
-
-      <div class="nx-foot-grid">
-        <div class="nx-foot-col">
-          <h4>WHY US</h4>
-          <a href="about.html">About Us</a>
-          <a href="BOARD of directors.html">Board / Management</a>
-          <a href="Mission.html">Mission & Vision</a>
-        </div>
-
-        <div class="nx-foot-col">
-          <h4>EDUCATION</h4>
-          <a href="New to trading.html">New to Trading</a>
-          <a href="Investorguid.html">Investor Guide</a>
-          <a href="Glossary.html">Glossary</a>
-        </div>
-
-        <div class="nx-foot-col">
-          <h4>ACCOUNT</h4>
-          <a href="Rda.html">Roshan Digital Account</a>
-          <a href="Acoocint opening.html">Open Digital Account</a>
-          <a href="DMANAGE FUDNDS.HTML">Manage Funds</a>
-        </div>
-
-        <div class="nx-foot-col">
-          <h4>CONTACT</h4>
-          <a href="mailto:info@stoxgear.com.pk">info@stoxgear.com.pk</a>
-          <a href="tel:0913168395">091-3168395</a>
-          <a href="#">Peshawar, Pakistan</a>
-        </div>
-      </div>
-
-      <div class="nx-foot-bottom">
-        <span>© <span id="yr"></span> Stoxgear Securities (Private) Limited</span>
-        <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></span>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById('yr').textContent = new Date().getFullYear();
-
-    (function(){
-      const header = document.getElementById("nxHeader");
-      const toggle = document.getElementById("nxToggle");
-      const menu   = document.getElementById("nxMenu");
-
-      const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 8);
-      onScroll();
-      window.addEventListener("scroll", onScroll, {passive:true});
-
-      if (toggle){
-        toggle.addEventListener("click", ()=>{
-          const open = !header.classList.contains("is-open");
-          header.classList.toggle("is-open", open);
-          toggle.setAttribute("aria-expanded", String(open));
-          if(!open) header.querySelectorAll(".nx-item.open").forEach(i=>i.classList.remove("open"));
-        });
-      }
-
-      menu?.addEventListener("click", (e)=>{
-        const link = e.target.closest(".nx-link");
-        if(!link) return;
-
-        const ddId = link.getAttribute("data-dd");
-        const isMobile = window.matchMedia("(max-width:1024px)").matches;
-        if(ddId && isMobile){
-          e.preventDefault();
-          const item = link.closest(".nx-item");
-          menu.querySelectorAll(".nx-item.open").forEach(i => { if(i !== item) i.classList.remove("open"); });
-          item.classList.toggle("open");
-        }
-      });
-
-      document.addEventListener("click", (e)=>{
-        const isMobile = window.matchMedia("(max-width:1024px)").matches;
-        if(!isMobile) return;
-        if(header && !header.contains(e.target)){
-          header.classList.remove("is-open");
-          toggle && toggle.setAttribute("aria-expanded","false");
-          header.querySelectorAll(".nx-item.open").forEach(i=>i.classList.remove("open"));
-        }
-      });
-    })();
-  </script>
+/* SCROLL SHADOW */
+window.addEventListener("scroll",()=>{
+  header.classList.toggle("scrolled",window.scrollY>8);
+});
+</script>
 
 </body>
 </html>
