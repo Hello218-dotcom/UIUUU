@@ -1,133 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>Stoxgear</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&amp;display=swap" rel="stylesheet"/>
 
 <style>
+/* ================= WHITE + GOLD THEME ================ */
 :root{
   --bg:#ffffff;
+  --surface:#ffffff;
   --ink:#141414;
-  --muted:#666;
+  --muted:#666666;
   --accent:#c9a646;
+  --accent-2:#b38b2e;
+  --accent-ink:#ffffff;
+  --ring:rgba(201,166,70,.28);
   --line:#e5e5e5;
-  --shadow:0 10px 26px rgba(0,0,0,.1);
+  --radius:16px;
+  --shadow:0 10px 26px rgba(0,0,0,.10);
   --maxw:1200px;
 }
+
 *{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0;
-  font-family:Inter,system-ui,Arial;
   background:var(--bg);
   color:var(--ink);
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+  overflow-x:hidden;
 }
-img{max-width:100%;display:block}
-a{text-decoration:none;color:inherit}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;height:auto;display:block}
 .container{max-width:var(--maxw);margin:auto;padding:0 20px}
 
-/* ================= NAVBAR ================= */
+/* ============ A11Y + MOTION ============ */
+:focus-visible{
+  outline:3px solid var(--ring);
+  outline-offset:3px;
+  border-radius:12px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important; scroll-behavior:auto !important;}
+}
+
+/* ---------- NAVBAR (your design) ---------- */
 .nx-navbar{
   position:sticky;top:0;z-index:1000;
   background:#fff;
-  border-bottom:1px solid var(--line);
+  border-bottom:1px solid #e7e9ee;
   box-shadow:0 6px 18px rgba(0,0,0,.06);
+  backdrop-filter:saturate(140%) blur(6px);
+  transform:translateZ(0);
 }
+.nx-navbar.scrolled{ box-shadow:0 10px 28px rgba(0,0,0,.12); }
+
 .nx-nav-inner{
-  max-width:var(--maxw);
-  margin:auto;
-  padding:14px 20px;
-  display:flex;
-  align-items:center;
-  gap:16px;
+  max-width:1200px;margin:0 auto;
+  padding:12px 20px;
+  display:flex;align-items:center;gap:16px;
 }
-.nx-brand{display:flex;align-items:center;gap:10px}
-.nx-logo,.nx-logo2{height:36px}
+.nx-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#0f1220;min-width:0}
+.nx-logo{height:38px;width:auto;display:block}
+.nx-logo2{
+  height:48px;
+  width:auto;
+  max-width:220px;
+  object-fit:contain;
+  margin-left:10px;
+  display:block;
+}
 .nx-grow{flex:1}
 
-.nx-menu{display:flex;gap:26px}
-.nx-item{position:relative}
-.nx-link{font-weight:800;color:var(--muted)}
-.nx-link:hover{color:var(--accent)}
-
-.nx-drop{
-  position:absolute;
-  top:calc(100% + 10px);
-  left:0;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:10px;
-  min-width:220px;
-  display:none;
-  box-shadow:0 12px 28px rgba(0,0,0,.12);
+.nx-cta{
+  background:linear-gradient(135deg,var(--accent),#efd37a);
+  color:#000;font-weight:800;
+  border:none;border-radius:999px;
+  padding:10px 18px;cursor:pointer;
+  transition:transform .22s ease, filter .22s ease, box-shadow .22s ease;
+  box-shadow:0 10px 20px rgba(201,166,70,.22);
+  white-space:nowrap;
 }
-.nx-drop a{
-  display:block;
-  padding:8px 10px;
-  font-weight:700;
-}
-.nx-drop a:hover{color:var(--accent);background:#f7f7f7}
-
-@media(min-width:1025px){
-  .nx-item:hover>.nx-drop{display:block}
-}
+.nx-cta:hover{filter:brightness(1.05); transform:translateY(-1px); box-shadow:0 14px 26px rgba(201,166,70,.30)}
+.nx-cta:active{transform:translateY(0)}
 
 .nx-toggle{
-  display:none;
-  border:1px solid var(--line);
-  background:#fff;
-  padding:6px 12px;
-  border-radius:10px;
-  font-size:20px;
+  background:#fff;border:1px solid #e7e9ee;border-radius:12px;
+  padding:8px 12px;
+  color:#c9a646;font-size:20px;cursor:pointer;
+  display:none; line-height:1;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.nx-toggle:hover{box-shadow:0 10px 22px rgba(0,0,0,.08); transform:translateY(-1px);}
+
+.nx-menu{display:flex;align-items:center;gap:22px}
+.nx-item{position:relative}
+.nx-link{
+  text-decoration:none;color:#5e6676;font-weight:700;position:relative;
+  display:inline-flex; align-items:center; gap:8px;
+  transition:color .2s ease;
+}
+.nx-link:after{
+  content:"";position:absolute;left:0;right:0;bottom:-6px;
+  height:2px;background:#c9a646;transform:scaleX(0);
+  transition:.25s;
+}
+.nx-link:hover{color:#c9a646}
+.nx-link:hover:after{transform:scaleX(1)}
+
+.nx-drop{
+  position:absolute;top:calc(100% + 12px);left:0;
+  background:#fff;border:1px solid #e7e9ee;
+  border-radius:12px;padding:8px;
+  min-width:240px;z-index:9999;
+  box-shadow:0 16px 34px rgba(0,0,0,.14);
+
+  /* ✅ fixed: your "no scrolling" intent, but without breaking CSS */
+  max-height:none;
+  overflow:hidden;
+
+  opacity:0;
+  transform:translateY(10px) scale(.985);
+  pointer-events:none;
+  transition:opacity .18s ease, transform .18s ease;
+}
+.nx-drop a{
+  display:block;color:#0f1220;
+  text-decoration:none;padding:8px 12px;border-radius:10px;
+  font-weight:600;
+  transition:background .15s ease, color .15s ease, transform .15s ease;
+}
+.nx-drop a:hover{background:#f6f6f6;color:#c9a646; transform:translateX(2px)}
+
+@media (min-width:1025px){
+  .nx-item:hover>.nx-drop{
+    opacity:1; transform:translateY(0) scale(1); pointer-events:auto;
+  }
 }
 
-@media(max-width:1024px){
+/* ---------- MOBILE NAV ---------- */
+@media (max-width:1024px){
   .nx-toggle{display:block}
+  .nx-cta{display:none;}
+  .nx-nav-inner{padding:12px 14px;}
+  .nx-logo{height:34px;}
+  .nx-logo2{height:38px; max-width:170px; margin-left:6px;}
+
   .nx-menu{
-    display:none;
-    position:absolute;
-    top:100%;left:0;right:0;
+    display:block;
+    position:absolute;top:100%;left:0;right:0;
     background:#fff;
-    flex-direction:column;
-    border-top:1px solid var(--line);
-    padding:10px;
+    border-top:1px solid #e7e9ee;
+    box-shadow:0 14px 30px rgba(0,0,0,.10);
+
+    max-height:0;
+    overflow:hidden;
+    opacity:0;
+    transform:translateY(-8px);
+    transition:max-height .35s ease, opacity .25s ease, transform .25s ease;
+    padding:0 12px;
   }
-  .nx-navbar.is-open .nx-menu{display:flex}
+
+  .nx-navbar.is-open .nx-menu{
+    max-height:75vh;
+    opacity:1;
+    transform:translateY(0);
+    padding:10px 12px 14px;
+  }
+
+  .nx-item{width:100%}
+  .nx-link{
+    display:flex; justify-content:space-between;
+    padding:12px 10px;
+    border-radius:12px;
+  }
+  .nx-link:hover{background:#fafafa}
+
+  .nx-item .nx-link::before{
+    content:"▾";
+    order:2;
+    color:#9aa2b1;
+    font-size:14px;
+    transform:rotate(0deg);
+    transition:transform .2s ease;
+  }
+  .nx-item:last-child .nx-link::before{content:"";}
+
   .nx-drop{
     position:static;
-    border:0;
+    border:none;
     box-shadow:none;
-    padding-left:10px;
+    background:none;
+    padding:0 6px 8px;
+
+    opacity:1;
+    transform:none;
+    pointer-events:auto;
+
+    display:grid;
+    gap:6px;
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .28s ease;
   }
-  .nx-item.open>.nx-drop{display:block}
+  .nx-item.open>.nx-drop{max-height:520px;}
+  .nx-item.open>.nx-link::before{transform:rotate(180deg);}
+
+  .nx-drop a{
+    background:#fbfbfb;
+    border:1px solid #f0f0f0;
+  }
 }
 
-/* ================= HERO ================= */
-.hero{border-bottom:1px solid var(--line)}
+/* ================= INDEX HERO + TICKER + CARDS ================= */
+.hero{
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
 .hero__inner{
   display:grid;
   grid-template-columns:1.1fr .9fr;
   gap:28px;
-  padding:42px 0;
+  padding:42px 0 18px;
   align-items:center;
 }
-.hero h1{font-size:clamp(28px,5vw,56px)}
+.hero h1{
+  font-size:clamp(28px,5vw,56px);
+  margin:0 0 12px;
+  letter-spacing:-.02em;
+}
 .hero h1 .hl{color:var(--accent)}
-.hero p{color:var(--muted)}
+.hero p{color:var(--muted);line-height:1.6;margin:0}
+
 .hero__art img{
-  height:320px;
   width:100%;
+  height:320px;
   object-fit:cover;
   border-radius:16px;
   box-shadow:var(--shadow);
 }
 
-/* ================= TICKER ================= */
+@media(max-width:900px){
+  .hero__inner{grid-template-columns:1fr;padding:22px 0 12px;gap:16px;}
+  .hero__art img{height:240px;}
+}
+
 .ticker{
   background:#f7f8f9;
   border-top:1px solid var(--line);
@@ -145,11 +267,11 @@ a{text-decoration:none;color:inherit}
   from{transform:translateX(0)}
   to{transform:translateX(-50%)}
 }
+.tick{font-size:14px}
 .tick .sym{font-weight:900}
 .tick.up{color:#0c8a0c}
 .tick.down{color:#c0392b}
 
-/* ================= CARDS ================= */
 .features{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -161,124 +283,163 @@ a{text-decoration:none;color:inherit}
   border-radius:18px;
   padding:20px;
   box-shadow:var(--shadow);
+  background:#fff;
 }
 .card .media img{
-  height:210px;
   width:100%;
+  height:210px;
   object-fit:cover;
   border-radius:14px;
   margin-bottom:12px;
 }
+.card h3{margin:6px 0 8px;font-weight:900}
+.card p{margin:0;color:var(--muted);line-height:1.6}
 
-/* ================= FOOTER ================= */
+@media(max-width:980px){
+  .features{grid-template-columns:1fr;gap:14px}
+}
+
+/* ---------- FOOTER (your design) ---------- */
 .nx-footer{
-  background:#fafafa;
-  border-top:1px solid var(--line);
+  background:#f7f7f9;
+  border-top:1px solid #e7e9ee;
+  color:#5e6676;
+  font-size:14px;
   margin-top:40px;
 }
-.nx-foot-wrap{
-  max-width:var(--maxw);
-  margin:auto;
-  padding:40px 20px 24px;
-}
-.nx-foot-top{
-  display:flex;
-  gap:12px;
-  align-items:center;
-  padding-bottom:20px;
-  border-bottom:1px solid var(--line);
-}
-.nx-foot-logo{height:36px}
-
+.nx-foot-wrap{max-width:1200px;margin:auto;padding:40px 20px}
+.nx-foot-top{display:flex;justify-content:flex-start;align-items:center;margin-bottom:22px;gap:12px}
+.nx-foot-brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#0f1220}
+.nx-foot-logo{height:36px;width:auto;object-fit:contain}
 .nx-foot-grid{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:26px;
-  padding:26px 0;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:28px;
+  text-align:left;
 }
-.nx-foot-col h4{
-  color:var(--accent);
-  margin:0 0 10px;
-  font-size:15px;
-}
-.nx-foot-col a{
-  display:block;
-  padding:6px 0;
-  font-size:14px;
-  color:var(--ink);
-  opacity:.9;
-}
-.nx-foot-col a:hover{opacity:1;color:var(--accent)}
-
+.nx-foot-col h4{color:#c9a646;margin-bottom:10px;font-size:15px}
+.nx-foot-col a{display:block;color:#2b3040;text-decoration:none;margin:6px 0}
+.nx-foot-col a:hover{color:#c9a646}
 .nx-foot-bottom{
-  border-top:1px solid var(--line);
-  padding-top:14px;
-  font-size:13px;
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
+  display:flex;justify-content:space-between;
+  flex-wrap:wrap;margin-top:26px;
+  color:#5e6676;font-size:13px;
+  border-top:1px solid #e7e9ee;
+  padding-top:12px;
   gap:10px;
-  color:var(--muted);
 }
-
-@media(max-width:900px){
-  .hero__inner{grid-template-columns:1fr;padding:22px 0}
-  .hero__art img{height:240px}
-  .features{grid-template-columns:1fr}
+@media (max-width:900px){
+  .nx-foot-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:600px){
   .nx-foot-grid{grid-template-columns:1fr}
+  .nx-foot-bottom{flex-direction:column;text-align:center;gap:8px}
+  .nx-foot-wrap{padding:34px 14px}
 }
 </style>
+
+<link href="assets/stoxgear-pro.css" rel="stylesheet"/>
 </head>
 
-<body>
+<body data-page="index.html">
 
-<!-- ===== NAVBAR ===== -->
+<!-- ========== NAVBAR ========== -->
 <header class="nx-navbar" id="nxHeader">
   <div class="nx-nav-inner">
-    <a class="nx-brand" href="index.html">
-      <img src="stoxgear-logo.jpg" class="nx-logo">
-      <img src="partner.jpg" class="nx-logo2">
+    <a aria-label="StoxGear Home" class="nx-brand" href="index.html">
+      <img alt="StoxGear" class="nx-logo" src="stoxgear-logo.jpg"/>
+      <img alt="Partner" class="nx-logo2" src="WhatsApp Image 2025-10-18 at 10.34.53_ed0e28f6.jpg"/>
     </a>
+
     <div class="nx-grow"></div>
 
-    <nav class="nx-menu" id="nxMenu">
+    <nav aria-label="Primary navigation" class="nx-menu" id="nxMenu">
       <div class="nx-item">
-        <a class="nx-link" href="#">Why Us</a>
-        <div class="nx-drop">
+        <a class="nx-link" data-dd="dd-why" href="#">Why Us</a>
+        <div class="nx-drop" id="dd-why">
           <a href="about.html">About Us</a>
           <a href="BOARD of directors.html">Board / Management</a>
-          <a href="Mission.html">Mission & Vision</a>
+          <a href="Mission.html">Mission &amp; Vision</a>
+          <a href="associated companies.html">Associated Companies</a>
+          <a href="Ncb auditor details .html">Auditors / Legal Advisors</a>
+          <a href="services.html">Services</a>
+          <a href="Registered agents..html">Registered Agents</a>
         </div>
       </div>
+
       <div class="nx-item">
-        <a class="nx-link" href="#">Education</a>
-        <div class="nx-drop">
+        <a class="nx-link" data-dd="dd-edu" href="#">Education</a>
+        <div class="nx-drop" id="dd-edu">
           <a href="New to trading.html">New to Trading</a>
+          <a href="Investorguid.html">Investor Guide</a>
           <a href="Glossary.html">Glossary</a>
+          <a href="psx-rule-book.html">PSX Rule Book</a>
+          <a href="common-terms-share-market.html">Common Terms of Share Market</a>
+          <a href="online-order-execution-flow.html">Order Execution Flow</a>
+          <a href="order-settlement-flow.html">Order Settlement Flow</a>
+          <a href="arbitration-procedure.html">Arbitration Procedure</a>
+          <a href="risk-disclosure-document.html">Risk Disclosure Document</a>
+          <a href="procedure-cancel-pending-orders.html">Cancel Pending Orders</a>
+          <a href="faqs.html">FAQs</a>
         </div>
       </div>
+
+      <div class="nx-item">
+        <a class="nx-link" data-dd="dd-open" href="#">Open Account</a>
+        <div class="nx-drop" id="dd-open">
+          <a href="Rda.html">Roshan Digital Account</a>
+          <a href="Acoocint opening.html">Open Digital Account</a>
+          <a href="DMANAGE FUDNDS.HTML">Manage Funds</a>
+        </div>
+      </div>
+
+      <div class="nx-item">
+        <a class="nx-link" data-dd="dd-dl" href="#">Downloads</a>
+        <div class="nx-drop" id="dd-dl">
+          <a href="Forms.html">Forms</a>
+          <a href="software.html">Software</a>
+          <a href="Annaual half yearly.html">Financial Statements</a>
+          <a href="KYC poslicy.html">CDD / KYC Policy</a>
+        </div>
+      </div>
+
+      <div class="nx-item">
+        <a class="nx-link" data-dd="dd-sup" href="#">Support</a>
+        <div class="nx-drop" id="dd-sup">
+          <a href="investor complaint.html">Investor Complaint</a>
+          <a href="Pending investor complaun.html">Pending Complaints</a>
+          <a href="Penal action.html">Penal Action</a>
+          <a href="Secp complaint.html">SECP Complaint</a>
+          <a href="psx complaint.html">PSX Complaint</a>
+          <a href="UIs of NICCPL.html">UIS Services</a>
+          <a href="Eservices By CDC.html">EServices by CDC</a>
+        </div>
+      </div>
+
       <div class="nx-item">
         <a class="nx-link" href="Contact.html">Contact</a>
       </div>
     </nav>
 
-    <button class="nx-toggle" id="nxToggle">☰</button>
+    <button class="nx-cta" type="button">OPEN AN ACCOUNT</button>
+    <button aria-expanded="false" aria-label="Open menu" class="nx-toggle" id="nxToggle">☰</button>
   </div>
 </header>
 
-<!-- ===== HERO + TICKER ===== -->
+<!-- ========== INDEX CONTENT ========== -->
 <section class="hero">
   <div class="container hero__inner">
     <div>
       <h1>Trade smarter. Build <span class="hl">long-term</span> wealth.</h1>
-      <p>Experience fast execution and professional-grade tools.</p>
+      <p>Experience fast execution, professional-grade tools, and secure custody.</p>
     </div>
+
     <div class="hero__art">
-      <img src="32c36e34-464d-4c0c-a42a-caa5b9e3aa68.png">
+      <img src="32c36e34-464d-4c0c-a42a-caa5b9e3aa68.png" alt="Trading charts on professional screens" loading="lazy">
     </div>
   </div>
 
-  <div class="ticker">
+  <div class="ticker" aria-label="Market ticker">
     <div class="container">
       <div class="ticker__row">
         <div class="tick down"><span class="sym">KSE100</span> 163806</div>
@@ -286,6 +447,7 @@ a{text-decoration:none;color:inherit}
         <div class="tick up"><span class="sym">SBL</span> 12.98</div>
         <div class="tick down"><span class="sym">TPLP</span> 11.58</div>
 
+        <!-- duplicate for seamless loop -->
         <div class="tick down"><span class="sym">KSE100</span> 163806</div>
         <div class="tick up"><span class="sym">POWER</span> 19.11</div>
         <div class="tick up"><span class="sym">SBL</span> 12.98</div>
@@ -295,48 +457,66 @@ a{text-decoration:none;color:inherit}
   </div>
 </section>
 
-<!-- ===== FEATURES ===== -->
 <section class="container">
   <div class="features">
-    <div class="card">
-      <div class="media"><img src="67d257b1-d533-4979-b5bd-2c71e6c14369.png"></div>
+    <article class="card">
+      <div class="media">
+        <img src="67d257b1-d533-4979-b5bd-2c71e6c14369.png" alt="Experienced Portfolio Support" loading="lazy">
+      </div>
       <h3>Experienced Portfolio Support</h3>
-    </div>
-    <div class="card">
-      <div class="media"><img src="261d52a1-187a-4f29-b436-745c87472b75.png"></div>
+      <p>Work with market professionals focused on disciplined execution.</p>
+    </article>
+
+    <article class="card">
+      <div class="media">
+        <img src="261d52a1-187a-4f29-b436-745c87472b75.png" alt="Professional Trading Platform" loading="lazy">
+      </div>
       <h3>Professional Trading Platform</h3>
-    </div>
-    <div class="card">
-      <div class="media"><img src="62fc0d92-eb2b-44e1-b010-5f60358398b9.png"></div>
-      <h3>Research & Market Intelligence</h3>
-    </div>
+      <p>Desktop and mobile apps with fast order entry.</p>
+    </article>
+
+    <article class="card">
+      <div class="media">
+        <img src="62fc0d92-eb2b-44e1-b010-5f60358398b9.png" alt="Research &amp; Market Intelligence" loading="lazy">
+      </div>
+      <h3>Research &amp; Market Intelligence</h3>
+      <p>Actionable research and market data.</p>
+    </article>
   </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
+<!-- ========== FOOTER ========== -->
 <footer class="nx-footer">
   <div class="nx-foot-wrap">
     <div class="nx-foot-top">
-      <img src="stoxgear-logo.jpg" class="nx-foot-logo">
-      <img src="partner.jpg" class="nx-foot-logo">
+      <a class="nx-foot-brand" href="index.html">
+        <img alt="" class="nx-foot-logo" src="stoxgear-logo.jpg"/>
+        <img alt="" class="nx-foot-logo" src="WhatsApp Image 2025-10-18 at 10.34.53_ed0e28f6.jpg"/>
+      </a>
     </div>
 
     <div class="nx-foot-grid">
       <div class="nx-foot-col">
         <h4>WHY US</h4>
         <a href="about.html">About Us</a>
-        <a href="Mission.html">Mission & Vision</a>
+        <a href="BOARD of directors.html">Board / Management</a>
+        <a href="Mission.html">Mission &amp; Vision</a>
       </div>
+
       <div class="nx-foot-col">
         <h4>EDUCATION</h4>
         <a href="New to trading.html">New to Trading</a>
+        <a href="Investorguid.html">Investor Guide</a>
         <a href="Glossary.html">Glossary</a>
       </div>
+
       <div class="nx-foot-col">
         <h4>ACCOUNT</h4>
         <a href="Rda.html">Roshan Digital Account</a>
         <a href="Acoocint opening.html">Open Digital Account</a>
+        <a href="DMANAGE FUDNDS.HTML">Manage Funds</a>
       </div>
+
       <div class="nx-foot-col">
         <h4>CONTACT</h4>
         <a href="mailto:info@stoxgear.com.pk">info@stoxgear.com.pk</a>
@@ -346,27 +526,71 @@ a{text-decoration:none;color:inherit}
     </div>
 
     <div class="nx-foot-bottom">
-      <span>© 2026 Stoxgear Securities (Private) Limited</span>
-      <span>Privacy · Terms</span>
+      <span>© <script>document.write(new Date().getFullYear())</script> Stoxgear Securities (Private) Limited</span>
+      <span>
+        <a href="privacy.html">Privacy</a> ·
+        <a href="terms.html">Terms</a>
+      </span>
     </div>
   </div>
 </footer>
 
+<!-- ========== NAV JS (your behavior) ========== -->
 <script>
-const toggle=document.getElementById("nxToggle");
-const header=document.getElementById("nxHeader");
-const menu=document.getElementById("nxMenu");
+(function(){
+  const header = document.getElementById('nxHeader');
+  const toggle = document.getElementById('nxToggle');
 
-toggle.onclick=()=>header.classList.toggle("is-open");
-menu.onclick=e=>{
-  const link=e.target.closest(".nx-link");
-  if(!link) return;
-  if(window.innerWidth<=1024){
-    e.preventDefault();
-    link.parentElement.classList.toggle("open");
+  const onScroll = () => {
+    if (header) header.classList.toggle('scrolled', window.scrollY > 6);
+  };
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  if (toggle && header){
+    toggle.addEventListener('click', ()=>{
+      const open = !header.classList.contains('is-open');
+      header.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      if (!open) header.querySelectorAll('.nx-item.open').forEach(el=>el.classList.remove('open'));
+    });
   }
-};
+
+  document.querySelectorAll('.nx-item > .nx-link').forEach(link=>{
+    link.addEventListener('click', (e)=>{
+      const drop = link.nextElementSibling;
+      const isMobile = window.matchMedia('(max-width:1024px)').matches;
+      if (isMobile && drop && drop.classList.contains('nx-drop')){
+        e.preventDefault();
+        const parent = link.parentElement;
+        const willOpen = !parent.classList.contains('open');
+        header.querySelectorAll('.nx-item.open').forEach(el=>el.classList.remove('open'));
+        parent.classList.toggle('open', willOpen);
+        link.setAttribute('aria-expanded', String(willOpen));
+      }
+    });
+  });
+
+  document.addEventListener('click', (e)=>{
+    const isMobile = window.matchMedia('(max-width:1024px)').matches;
+    if (isMobile && header && !header.contains(e.target)){
+      header.classList.remove('is-open');
+      toggle && toggle.setAttribute('aria-expanded','false');
+      header.querySelectorAll('.nx-item.open').forEach(el=>el.classList.remove('open'));
+    }
+  });
+
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape' && header && header.classList.contains('is-open')){
+      header.classList.remove('is-open');
+      toggle && toggle.setAttribute('aria-expanded','false');
+      header.querySelectorAll('.nx-item.open').forEach(el=>el.classList.remove('open'));
+    }
+  });
+})();
 </script>
 
+<script defer="True" src="assets/stoxgear-pro.js"></script>
 </body>
 </html>
+
